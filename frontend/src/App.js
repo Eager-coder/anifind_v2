@@ -16,7 +16,7 @@ import User from "./pages/UserPage"
 import UserContext from "./UserContext"
 import { tokenHandler } from "./api/user/auth"
 import { getFavorites } from "./api/user/favorite"
-import { lightTheme, darkTheme } from "./utlis/theme"
+import { lightTheme, darkTheme } from "./utlis/constants"
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -38,6 +38,7 @@ export default function App() {
 
 	const getUserData = async () => {
 		const data = await tokenHandler()
+		console.log(process.env)
 		if (data) {
 			const favorites = await getFavorites()
 			setUser({ ...data, favorites })

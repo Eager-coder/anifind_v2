@@ -1,13 +1,13 @@
-const url = "http://localhost:80"
+import { api_url } from "../../utlis/constants"
 
 const getComments = async page_id => {
-	const res = await fetch(`${url}/api/user/comment/?page_id=${page_id}`)
+	const res = await fetch(`${api_url}/api/user/comment/?page_id=${page_id}`)
 	const { data } = await res.json()
 	return data
 }
 
 const postComment = async (comment, page_id) => {
-	const res = await fetch(`${url}/api/user/comment`, {
+	const res = await fetch(`${api_url}/api/user/comment`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",

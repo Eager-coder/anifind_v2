@@ -9,7 +9,7 @@ const homeListQuery = async () => {
         hasNextPage
         perPage
       }
-      media(sort: TRENDING_DESC) {
+      media(sort: TRENDING_DESC type: ANIME) {
         id
         title {
           romaji
@@ -31,7 +31,7 @@ const homeListQuery = async () => {
         hasNextPage
         perPage
       }
-      media(sort: POPULARITY_DESC) {
+      media(sort: POPULARITY_DESC type: ANIME) {
         id
         title {
           romaji

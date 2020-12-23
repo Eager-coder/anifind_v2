@@ -1,3 +1,6 @@
+export const api_url =
+	process.env.NODE_ENV === "production" ? "" : "http://localhost:80"
+
 export const lightTheme = {
 	theme: "light",
 	body: "#edf1f5",

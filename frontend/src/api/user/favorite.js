@@ -1,19 +1,20 @@
+import { api_url } from "../../utlis/constants"
+
 const options = (method = "GET", body = null) => {
-		return {
-			method,
-			headers: {
-				"Content-Type": "application/json",
-				Accept: "application/json",
-				Authorization: localStorage.getItem("auth"),
-			},
-			body: JSON.stringify({ data: body }) || null,
-		}
-	},
-	url = "http://localhost:80"
+	return {
+		method,
+		headers: {
+			"Content-Type": "application/json",
+			Accept: "application/json",
+			Authorization: localStorage.getItem("auth"),
+		},
+		body: JSON.stringify({ data: body }) || null,
+	}
+}
 
 export const addToFavorites = async (user_id, page_id, cover_image, title) => {
 	try {
-		const res = await fetch(`${url}/api/user/favorites/`, {
+		const res = await fetch(`${api_url}/api/user/favorites/`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -35,7 +36,7 @@ export const addToFavorites = async (user_id, page_id, cover_image, title) => {
 
 export const getFavorites = async user_id => {
 	try {
-		const res = await fetch(`${url}/api/user/favorites/`, {
+		const res = await fetch(`${api_url}/api/user/favorites/`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
@@ -56,7 +57,7 @@ export const getFavorites = async user_id => {
 export const removeFavorite = async page_id => {
 	try {
 		const res = await fetch(
-			`${url}/api/user/favorites/${page_id}`,
+			`${api_url}/api/user/favorites/${page_id}`,
 			options("DELETE")
 		)
 		const json = await res.json()
