@@ -18,7 +18,7 @@ app.use("/api/user/update", require("./routes/user/auth.update"))
 const PORT = process.env.PORT || 80
 console.log()
 
-app.use(express.static("../frontend/build"))
+app.use(express.static("./frontend/build"))
 app.listen(PORT, () =>
 	console.log(`Server running on port: http://localhost:${PORT}`)
 )
