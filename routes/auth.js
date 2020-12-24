@@ -89,7 +89,15 @@ router.post("/login", async (req, res) => {
 	}
 })
 router.get("/", checkAuth, async (req, res) => {
-	res.status(200).json({ data: req.user })
+	console.log("cookie", req.cookies)
+
+	res
+		.cookie("auth", "This is token inside a cookie", {
+			maxAge: 3600 * 1000 * 72,
+			httpOnly: true,
+		})
+		.status(200)
+		.json({ data: req.user })
 })
 
 module.exports = router

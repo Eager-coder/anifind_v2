@@ -61,7 +61,6 @@ const Container = styled.section`
 	padding: 0 50px;
 	margin: auto;
 	h2 {
-		color: ${({ theme }) => theme.header};
 		font-size: 2.5rem;
 	}
 	textarea {
@@ -80,7 +79,6 @@ const Container = styled.section`
 		font-size: 1.2rem;
 		border-radius: 4px;
 		border: none;
-		color: ${({ theme }) => theme.header};
 	}
 	.all-comments {
 		margin-top: 20px;

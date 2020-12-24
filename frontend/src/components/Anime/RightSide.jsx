@@ -10,12 +10,10 @@ const Section = styled.section`
 		font-weight: 900;
 		margin-bottom: 10px;
 		padding: 0;
-		color: ${({ theme }) => theme.header};
 	}
 	p {
 		font-size: 1.1rem;
 		margin-bottom: 20px;
-		color: ${({ theme }) => theme.text};
 	}
 	.mobile-img {
 		display: none;

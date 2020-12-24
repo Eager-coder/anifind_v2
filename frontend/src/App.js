@@ -31,6 +31,12 @@ const GlobalStyle = createGlobalStyle`
 	a {
 		text-decoration: none;
 	}
+	h1, h2, h3, h4 {
+		color: ${({ theme }) => theme.header};
+	}
+	p{
+		color: ${({ theme }) => theme.text};
+	}
 `
 export default function App() {
 	const [user, setUser] = useState(null)
@@ -66,18 +72,14 @@ export default function App() {
 							<Route exact path="/" component={Home} />
 							<Route path="/anime/:id" component={Anime} />
 							<Route path="/search" component={Search} />
-							<Route exact path="/user/:username">
+							<Route exact path="/me/:category">
 								{user ? <User /> : <Redirect to="/login" />}
 							</Route>
 							<Route exact path="/login">
-								{user ? <Redirect to={`/user/${user.username}`} /> : <Login />}
+								{user ? <Redirect to={`/me/profile`} /> : <Login />}
 							</Route>
 							<Route exact path="/register">
-								{user ? (
-									<Redirect to={`/user/${user.username}`} />
-								) : (
-									<Register />
-								)}
+								{user ? <Redirect to={`/me/profile`} /> : <Register />}
 							</Route>
 						</Switch>
 					</UserContext.Provider>

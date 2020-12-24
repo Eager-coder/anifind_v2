@@ -75,7 +75,7 @@ export default function Navbar({ user, theme, switchTheme }) {
 						alt=""
 					/>
 					{user ? (
-						<Link to={`/user/${user.username}`}>{user.username}</Link>
+						<Link to={`/me/profile`}>{user.username}</Link>
 					) : (
 						<>
 							<Link to="/login">Login</Link> |

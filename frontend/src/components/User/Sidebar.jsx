@@ -1,61 +1,65 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+
 const SideNav = styled.aside`
-	width: 500px;
-	.username span {
-		text-transform: uppercase;
-		font-size: 1.4rem;
-		font-weight: 600;
-	}
+	/* border: ${({ theme }) => theme.text} 2px solid; */
+	/* background: ${({ theme }) => theme.commentBg}; */
+	border-radius: 7px;
+	margin-right: 100px;
+	width: 200px;
+	height: max-content;
 	.links {
 		margin: 20px 30px;
+		list-style: none;
 		li {
 			width: 100%;
 			a {
 				display: block;
 				width: 100%;
 				margin: 10px 0;
-				text-transform: uppercase;
 				font-size: 1.5rem;
 			}
 		}
 	}
 	.link {
 		a {
-			color: black;
+			color: ${({ theme }) => theme.header};
 		}
 	}
 	.link-active {
 		a {
-			border-left: #ff4834 4px solid;
+			border-left: #70c7a7 4px solid;
 			padding-left: 20px;
-			color: #ff4834;
+			color: #70c7a7;
 		}
 	}
 	@media (max-width: 1024px) {
-		width: 350px;
+		width: 200px;
 	}
 	@media (max-width: 768px) {
-		.username span {
-			font-size: 1.2rem;
-		}
 		width: 100%;
 	}
 `
-export default function Sidebar() {
+export default function Sidebar({ category }) {
 	const link = "profile"
 	return (
 		<SideNav>
-			<div className="username">
-				<span>Welcome, </span>
-			</div>
 			<ul className="links">
-				<li className={link === "profile" ? "link-active" : "link"}>
-					<Link to="/">Profile</Link>
+				<li className={category === "profile" ? "link-active" : "link"}>
+					<Link to="/me/profile">Profile</Link>
 				</li>
-				<li className={link === "orders" ? "link-active" : "link"}>
-					<Link to="/">Orders</Link>
+				<li className={category === "favorites" ? "link-active" : "link"}>
+					<Link to="/me/favorites">Favorites</Link>
+				</li>
+				<li className={category === "comments" ? "link-active" : "link"}>
+					<Link to="/me/comments">Comments</Link>
+				</li>
+				<li className={category === "duscussions" ? "link-active" : "link"}>
+					<Link to="/me/duscussions">Discussions</Link>
+				</li>
+				<li className={category === "settings" ? "link-active" : "link"}>
+					<Link to="/me/settings">Settings</Link>
 				</li>
 			</ul>
 		</SideNav>

@@ -6,7 +6,6 @@ const Div = styled.div`
 	margin-top: 50px;
 	h2 {
 		font-size: 2.5rem;
-		color: ${({ theme }) => theme.header};
 		margin-bottom: 10px;
 	}
 	.input-container {

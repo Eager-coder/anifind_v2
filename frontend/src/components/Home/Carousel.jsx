@@ -69,7 +69,6 @@ const Section = styled.section`
 	h2 {
 		font-size: 2.5rem;
 		margin-bottom: 20px;
-		color: ${({ theme }) => theme.header};
 	}
 	.next-btn,
 	.prev-btn {
@@ -106,9 +105,6 @@ const Section = styled.section`
 				border-radius: 7px;
 				width: 150px;
 				height: 210px;
-			}
-			p {
-				color: ${({ theme }) => theme.text};
 			}
 		}
 	}

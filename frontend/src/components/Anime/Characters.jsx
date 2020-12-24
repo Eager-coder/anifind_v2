@@ -33,7 +33,6 @@ const Section = styled.section`
 		padding: 0;
 		font-size: 2.5rem;
 		font-weight: 600;
-		color: ${({ theme }) => theme.header};
 	}
 	.characters-container {
 		display: grid;
@@ -47,9 +46,6 @@ const Section = styled.section`
 				width: 100%;
 				height: 210px;
 				object-fit: cover;
-			}
-			p {
-				color: ${({ theme }) => theme.text};
 			}
 		}
 	}

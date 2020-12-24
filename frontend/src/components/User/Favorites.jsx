@@ -4,13 +4,15 @@ import { Link } from "react-router-dom"
 import { removeFavorite } from "../../api/user/favorite"
 import UserContext from "../../UserContext"
 const Container = styled.section`
-	h2 {
-		margin: 20px 0;
-		font-size: 2rem;
+	h1 {
+		margin-bottom: 20px;
+		font-size: 2.5rem;
 	}
 	.list {
+		width: 100%;
 		display: grid;
-		grid-template-columns: repeat(6, 1fr);
+		grid-template-columns: repeat(6, minmax(120px, 1fr));
+		column-gap: 20px;
 	}
 	button {
 		cursor: pointer;
@@ -32,7 +34,7 @@ export default function Favorites() {
 
 	return user.favorites?.length ? (
 		<Container>
-			<h2>Your favorites</h2>
+			<h1>Your favorites</h1>
 			<div className="list">
 				{user.favorites.map((item, index) => (
 					<Card key={index} item={item} user={user} setUser={setUser} />
@@ -45,6 +47,7 @@ export default function Favorites() {
 }
 
 const CardContainer = styled.div`
+	width: 120px;
 	display: flex;
 	flex-direction: column;
 	img {
@@ -52,6 +55,9 @@ const CardContainer = styled.div`
 		height: 170px;
 		object-fit: cover;
 		border-radius: 5px;
+	}
+	p {
+		font-size: 0.9rem;
 	}
 `
 
@@ -71,8 +77,9 @@ const Card = ({ item, user, setUser }) => {
 		<CardContainer>
 			<Link to={`/anime/${item.page_id}`}>
 				<img src={item.cover_image} alt="" />
+				<p>{item.title}</p>
 			</Link>
-			<Link to={`/anime/${item.page_id}`}>{item.title}</Link>
+			{/* <Link to={`/anime/${item.page_id}`}>{item.title}</Link> */}
 			<button disabled={loading} onClick={() => handleRemove(item.page_id)}>
 				{loading ? "Removing" : "Remove"}
 			</button>
