@@ -55,8 +55,8 @@ export default function Sidebar({ category }) {
 				<li className={category === "comments" ? "link-active" : "link"}>
 					<Link to="/me/comments">Comments</Link>
 				</li>
-				<li className={category === "duscussions" ? "link-active" : "link"}>
-					<Link to="/me/duscussions">Discussions</Link>
+				<li className={category === "discussions" ? "link-active" : "link"}>
+					<Link to="/me/discussions">Discussions</Link>
 				</li>
 				<li className={category === "settings" ? "link-active" : "link"}>
 					<Link to="/me/settings">Settings</Link>

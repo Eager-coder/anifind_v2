@@ -1,9 +1,9 @@
-import { useContext, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { removeFavorite } from "../../api/user/favorite"
-import UserContext from "../../UserContext"
 const Container = styled.section`
+	width: 100%;
 	h1 {
 		margin-bottom: 20px;
 		font-size: 2.5rem;
@@ -11,8 +11,9 @@ const Container = styled.section`
 	.list {
 		width: 100%;
 		display: grid;
-		grid-template-columns: repeat(6, minmax(120px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 		column-gap: 20px;
+		row-gap: 20px;
 	}
 	button {
 		cursor: pointer;
@@ -29,9 +30,7 @@ const Container = styled.section`
 	}
 `
 
-export default function Favorites() {
-	const { user, setUser } = useContext(UserContext)
-
+export default function Favorites({ user, setUser }) {
 	return user.favorites?.length ? (
 		<Container>
 			<h1>Your favorites</h1>
@@ -58,13 +57,16 @@ const CardContainer = styled.div`
 	}
 	p {
 		font-size: 0.9rem;
+		height: 30px;
+		margin-bottom: 5px;
 	}
 `
 
 const Card = ({ item, user, setUser }) => {
 	const [message, setMessage] = useState(null)
 	const [loading, setloading] = useState(false)
-
+	const title =
+		item.title.length > 25 ? item.title.slice(0, 25) + "..." : item.title
 	const handleRemove = async page_id => {
 		setloading(true)
 		const { data = null, message } = await removeFavorite(page_id)
@@ -77,9 +79,8 @@ const Card = ({ item, user, setUser }) => {
 		<CardContainer>
 			<Link to={`/anime/${item.page_id}`}>
 				<img src={item.cover_image} alt="" />
-				<p>{item.title}</p>
+				<p>{title}</p>
 			</Link>
-			{/* <Link to={`/anime/${item.page_id}`}>{item.title}</Link> */}
 			<button disabled={loading} onClick={() => handleRemove(item.page_id)}>
 				{loading ? "Removing" : "Remove"}
 			</button>

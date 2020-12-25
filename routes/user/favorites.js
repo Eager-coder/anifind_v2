@@ -5,6 +5,7 @@ const checkAuth = require("../../middleware/auth.middleware")
 const chalk = require("chalk")
 
 router.get("/", checkAuth, async (req, res) => {
+	console.log("req user", req.user)
 	const { user_id } = req.user
 	try {
 		const { rows } = await pool.query(`

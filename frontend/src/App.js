@@ -44,7 +44,6 @@ export default function App() {
 
 	const getUserData = async () => {
 		const data = await tokenHandler()
-		console.log(process.env)
 		if (data) {
 			const favorites = await getFavorites()
 			setUser({ ...data, favorites })

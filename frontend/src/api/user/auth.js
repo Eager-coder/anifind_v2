@@ -1,18 +1,18 @@
-import { api_url } from "../../utlis/constants"
-const options = (method, body) => {
-	return {
-		method,
-		headers: {
-			"Content-Type": "application/json",
-			Accept: "application/json",
-			Authorization: localStorage.getItem("auth"),
-		},
-		body: JSON.stringify(body) || null,
-	}
-}
+import { api_url, options } from "../../utlis/constants"
+// const options = (method, body) => {
+// 	return {
+// 		method,
+// 		headers: {
+// 			"Content-Type": "application/json",
+// 			Accept: "application/json",
+// 		},
+// 		body: JSON.stringify(body) || null,
+// 		credentials: "include",
+// 	}
+// }
 
 export const tokenHandler = async () => {
-	const res = await fetch(`${api_url}/api/auth/`, options("GET"))
+	const res = await fetch(`${api_url}/api/auth/`, options())
 	if (res.ok) {
 		const { data } = await res.json()
 		return data
@@ -25,7 +25,6 @@ export const loginHandler = async form => {
 	const { message, data, token } = await res.json()
 
 	if (res.ok) {
-		localStorage.setItem("auth", token)
 		return { data, message }
 	}
 	return { message }
@@ -37,7 +36,6 @@ export const registerHandler = async form => {
 	const { message, data, token } = await res.json()
 
 	if (res.ok) {
-		localStorage.setItem("auth", token)
 		return { data, message }
 	}
 	return { message }

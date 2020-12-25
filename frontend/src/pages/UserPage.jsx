@@ -7,6 +7,8 @@ import Favorites from "../components/User/Favorites"
 import Sidebar from "../components/User/Sidebar"
 import Profile from "../components/User/Profile"
 import Comments from "../components/User/Comments"
+import Discussions from "../components/User/Discussions"
+import Settings from "../components/User/Settings"
 
 const Container = styled.div`
 	max-width: 1200px;
@@ -36,7 +38,18 @@ export default function User() {
 				<div className="flex">
 					<Sidebar category={category} />
 					{category === "profile" && <Profile user={user} />}
-					{category === "favorites" && <Favorites />}
+					{category === "favorites" && (
+						<Favorites user={user} setUser={setUser} />
+					)}
+					{category === "comments" && (
+						<Comments user={user} setUser={setUser} />
+					)}
+					{category === "discussions" && (
+						<Discussions user={user} setUser={setUser} />
+					)}
+					{category === "settings" && (
+						<Settings user={user} setUser={setUser} />
+					)}
 				</div>
 				<button onClick={handleClick}>Logout</button>
 				{/* <UploadAvatar user={user} setUser={setUser} /> */}

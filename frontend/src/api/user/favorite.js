@@ -1,25 +1,24 @@
 import { api_url } from "../../utlis/constants"
 
-const options = (method = "GET", body = null) => {
+const options = (method = "GET", body) => {
 	return {
 		method,
 		headers: {
 			"Content-Type": "application/json",
 			Accept: "application/json",
-			Authorization: localStorage.getItem("auth"),
 		},
-		body: JSON.stringify({ data: body }) || null,
+		body: JSON.stringify(body) || null,
+		credentials: "include",
 	}
 }
 
 export const addToFavorites = async (user_id, page_id, cover_image, title) => {
 	try {
-		const res = await fetch(`${api_url}/api/user/favorites/`, {
+		const res = await fetch(`${api_url}/api/user/favorites`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 				Accept: "application/json",
-				Authorization: localStorage.getItem("auth"),
 			},
 			body: JSON.stringify({
 				page_id,
@@ -34,18 +33,11 @@ export const addToFavorites = async (user_id, page_id, cover_image, title) => {
 	}
 }
 
-export const getFavorites = async user_id => {
+export const getFavorites = async () => {
 	try {
-		const res = await fetch(`${api_url}/api/user/favorites/`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Accept: "application/json",
-				Authorization: localStorage.getItem("auth"),
-			},
-		})
+		const res = await fetch(`${api_url}/api/user/favorites/`, options())
+		const { data } = await res.json()
 		if (res.ok) {
-			const { data } = await res.json()
 			return data
 		}
 		return null

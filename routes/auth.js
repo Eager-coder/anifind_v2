@@ -70,14 +70,19 @@ router.post("/login", async (req, res) => {
 				{ user_id, username, email, avatar },
 				process.env.JWT_SECRET,
 				{
-					expiresIn: "3d",
+					expiresIn: "2d",
 				}
 			)
-			res.status(200).json({
-				token,
-				message: "Welcome back!",
-				data: { user_id, username, email, avatar },
-			})
+			res
+				.cookie("auth", token, {
+					expiresIn: 3600 * 1000 * 48,
+					httpOnly: true,
+				})
+				.status(200)
+				.json({
+					message: "Welcome back!",
+					data: { user_id, username, email, avatar },
+				})
 		} else {
 			res.status(400).json({
 				message: "Password is incorrect!",
@@ -88,16 +93,9 @@ router.post("/login", async (req, res) => {
 		console.log("login error", e)
 	}
 })
-router.get("/", checkAuth, async (req, res) => {
-	console.log("cookie", req.cookies)
 
-	res
-		.cookie("auth", "This is token inside a cookie", {
-			maxAge: 3600 * 1000 * 72,
-			httpOnly: true,
-		})
-		.status(200)
-		.json({ data: req.user })
+router.get("/", checkAuth, async (req, res) => {
+	res.status(200).json({ data: req.user })
 })
 
 module.exports = router
