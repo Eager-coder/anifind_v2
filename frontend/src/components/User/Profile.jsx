@@ -39,8 +39,6 @@ const ProfileContainer = styled.section`
 	}
 `
 export default function Profile({ user, setUser }) {
-	// const date = format(parseISO(user.created_at), "MMMM y")
-
 	useEffect(() => {
 		if (!user.created_at) {
 			getProfile().then(({ created_at, about }) => {

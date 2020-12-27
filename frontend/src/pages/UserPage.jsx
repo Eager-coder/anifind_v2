@@ -8,7 +8,7 @@ import Sidebar from "../components/User/Sidebar"
 import Profile from "../components/User/Profile"
 import Comments from "../components/User/Comments"
 import Discussions from "../components/User/Discussions"
-import Settings from "../components/User/Settings"
+import Settings from "../components/User/Settings/Settings"
 import { logout } from "../api/user/auth"
 const Container = styled.div`
 	max-width: 1200px;
@@ -29,7 +29,6 @@ export default function User() {
 	const { category } = useParams()
 	const handleLogout = async () => {
 		const { message, isSuccess } = await logout()
-		console.log(message)
 		if (isSuccess) return setUser(null)
 	}
 

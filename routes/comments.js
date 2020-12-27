@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
 		const { page_id } = req.query
 		if (!page_id) return res.status(404).json({ message: "Page not found" })
 		const { rows: allComments } = await pool.query(`
-			SELECT users.username, users.avatar, 
+			SELECT users.username, users.avatar, comments.is_edited,
 				comments.text, comments.created_at,
 				comments.comment_id, comments.user_id 
 			FROM comments, users WHERE comments.page_id = '${page_id}' 

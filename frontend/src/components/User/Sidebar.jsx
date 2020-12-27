@@ -3,14 +3,11 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 const SideNav = styled.aside`
-	/* border: ${({ theme }) => theme.text} 2px solid; */
-	/* background: ${({ theme }) => theme.commentBg}; */
 	border-radius: 7px;
 	margin-right: 100px;
 	width: 200px;
 	height: max-content;
 	.links {
-		margin: 20px 30px;
 		list-style: none;
 		li {
 			width: 100%;

@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { uploadAvatar } from "../../api/user/user.update"
 import styled from "styled-components"
-
 export default function UploadAvatar({ user, setUser }) {
 	const [fileInput, setFileInput] = useState("")
 	const [previewImg, setPreviewImg] = useState(null)

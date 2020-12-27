@@ -4,22 +4,11 @@ import styled from "styled-components"
 import { getUserComments } from "../../api/user/comment"
 import { formatRelative } from "date-fns"
 import Modal from "../../components/Modal"
-import { deleteComment } from "../../api/user/comment"
-const CommentsContainer = styled.section`
-	width: 100%;
-	h1 {
-		font-size: 2.5rem;
-		margin-bottom: 20px;
-	}
-`
+import { deleteComment, updateComment } from "../../api/user/comment"
+import { PrimaryBtn, GreenBtn, RedBtn } from "../ButtonStyles"
 export default function Comments({ user, setUser }) {
 	useEffect(() => {
-		if (!user.comments?.length) {
-			getUserComments().then(comments => {
-				setUser({ ...user, comments })
-				console.log(comments)
-			})
-		}
+		getUserComments().then(comments => setUser({ ...user, comments }))
 	}, [])
 	return (
 		<CommentsContainer>
@@ -37,6 +26,104 @@ export default function Comments({ user, setUser }) {
 		</CommentsContainer>
 	)
 }
+
+const Comment = ({ item, user, setUser }) => {
+	const [isEditOpen, setIsEditOpen] = useState(false)
+	const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+	const [editedComment, setEditedComment] = useState(item.text)
+
+	const deleteHandler = async comment_id => {
+		const { isSuccess } = await deleteComment(comment_id)
+		if (isSuccess) {
+			setIsDeleteOpen(false)
+			getUserComments().then(comments => setUser({ ...user, comments }))
+		}
+	}
+
+	const editHandler = async comment_id => {
+		if (editedComment != item.text || !editedComment) {
+			const { isSuccess } = await updateComment(editedComment, comment_id)
+			if (isSuccess) {
+				setIsEditOpen(false)
+				getUserComments().then(comments => setUser({ ...user, comments }))
+			}
+		}
+	}
+	return (
+		<CommentBox>
+			<p className="comment">{item.text}</p>
+			<div className="meta">
+				<span>
+					Commented on <Link to={`/anime/${item.page_id}`}>Anime</Link>
+				</span>
+				<span className="date">
+					{formatRelative(new Date(item.created_at * 1000), new Date())}{" "}
+					{item.is_edited && "(edited)"}
+				</span>
+			</div>
+			<GreenBtn
+				className="edit"
+				style={{ marginRight: "15px" }}
+				onClick={() => setIsEditOpen(true)}>
+				Edit
+			</GreenBtn>
+			<RedBtn className="delete" onClick={() => setIsDeleteOpen(true)}>
+				Delete
+			</RedBtn>
+			{isDeleteOpen && (
+				<Modal>
+					<h2>Delete comment</h2>
+					<p>
+						Are you sure you want to delete the comment? <br />
+						<span>{item.text}</span>
+					</p>
+					<div className="buttons">
+						<GreenBtn onClick={() => setIsDeleteOpen(false)} className="cancel">
+							Cancel
+						</GreenBtn>
+						<PrimaryBtn
+							onClick={() => deleteHandler(item.comment_id)}
+							className="submit">
+							Delete
+						</PrimaryBtn>
+					</div>
+				</Modal>
+			)}
+			{isEditOpen && (
+				<Modal>
+					<h2>Edit comment</h2>
+					<textarea
+						style={{ height: "100px", padding: "5px" }}
+						defaultValue={editedComment}
+						onChange={e => setEditedComment(e.target.value)}></textarea>
+					<div className="buttons">
+						<GreenBtn
+							className="cancel"
+							onClick={() => {
+								setIsEditOpen(false)
+								setEditedComment(item.text)
+							}}>
+							Cancel
+						</GreenBtn>
+						<PrimaryBtn
+							className="submit"
+							onClick={() => editHandler(item.comment_id)}>
+							Submit
+						</PrimaryBtn>
+					</div>
+				</Modal>
+			)}
+		</CommentBox>
+	)
+}
+
+const CommentsContainer = styled.section`
+	width: 100%;
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 20px;
+	}
+`
 const CommentBox = styled.div`
 	border-radius: 4px;
 	padding: 15px;
@@ -59,74 +146,3 @@ const CommentBox = styled.div`
 		margin-left: 20px;
 	}
 `
-const Comment = ({ item, user, setUser }) => {
-	const [isEditOpen, setIsEditOpen] = useState(false)
-	const [isDeleteOpen, setIsDeleteOpen] = useState(false)
-	const deleteHandler = async comment_id => {
-		const { message, isSuccess } = await deleteComment(comment_id)
-		if (isSuccess) {
-			setIsDeleteOpen(false)
-			const newCommentList = user.comments.filter(
-				comment => comment.comment_id != comment_id
-			)
-			setUser({ ...user, comments: newCommentList })
-		}
-	}
-
-	const editHandler = async => {}
-	return (
-		<CommentBox>
-			<p className="comment">{item.text}</p>
-			<div className="meta">
-				<span>
-					Commented on <Link to={`/anime/${item.page_id}`}>Anime</Link>
-				</span>
-				<span className="date">
-					{formatRelative(new Date(item.created_at * 1000), new Date())}
-				</span>
-			</div>
-			<button onClick={() => setIsEditOpen(true)}>Edit</button>
-			<button onClick={() => setIsDeleteOpen(true)}>Delete</button>
-			{isDeleteOpen && (
-				<Modal>
-					<h2>Delete comment</h2>
-					<p>
-						Are you sure you want to delete the comment? <br />
-						<p>{item.text}</p>
-					</p>
-					<div className="buttons">
-						<button onClick={() => setIsDeleteOpen(false)} className="cancel">
-							Cancel
-						</button>
-						<button
-							onClick={() => deleteHandler(item.comment_id)}
-							className="submit">
-							Delete
-						</button>
-					</div>
-				</Modal>
-			)}
-			{isEditOpen && (
-				<Modal>
-					<h2>Edit comment</h2>
-					<textarea
-						name="text"
-						id=""
-						cols="30"
-						rows="10"
-						defaultValue={item.text}></textarea>
-					<div className="buttons">
-						<button onClick={() => setIsEditOpen(false)} className="cancel">
-							Cancel
-						</button>
-						<button
-							onClick={() => editHandler(item.comment_id)}
-							className="submit">
-							Submit
-						</button>
-					</div>
-				</Modal>
-			)}
-		</CommentBox>
-	)
-}

@@ -45,7 +45,7 @@ router.post("/register", async (req, res) => {
 			.status(201)
 			.json({
 				message: "You are registered!",
-				data: { username, email },
+				data: { username, email, avatar },
 			})
 	} catch (e) {
 		console.error(e)

@@ -14,28 +14,22 @@ const ModalContainer = styled.div`
 
 	.container {
 		background: ${({ theme }) => theme.commentBg};
-		padding: 15px;
+		padding: 25px;
 		border-radius: 4px;
+		h2,
+		p {
+			margin-bottom: 10px;
+		}
+		textarea {
+			width: 600px;
+			height: 300px;
+			font-size: 1.1rem;
+		}
 	}
 	.buttons {
 		display: flex;
 		justify-content: space-between;
-		.cancel {
-			cursor: pointer;
-			color: ${({ theme }) => theme.header};
-			border: #70c7a7 1px solid;
-			padding: 5px;
-			border-radius: 4px;
-			background: none;
-		}
-		.submit {
-			cursor: pointer;
-			color: white;
-			background: #70c7a7;
-			padding: 5px;
-			border: none;
-			border-radius: 4px;
-		}
+		align-items: center;
 	}
 `
 export default function Modal({ children }) {
