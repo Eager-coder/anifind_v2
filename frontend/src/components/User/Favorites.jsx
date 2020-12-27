@@ -11,7 +11,7 @@ const Container = styled.section`
 	.list {
 		width: 100%;
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+		grid-template-columns: repeat(auto-fit, 120px);
 		column-gap: 20px;
 		row-gap: 20px;
 	}
@@ -31,17 +31,21 @@ const Container = styled.section`
 `
 
 export default function Favorites({ user, setUser }) {
-	return user.favorites?.length ? (
+	return (
 		<Container>
 			<h1>Your favorites</h1>
-			<div className="list">
-				{user.favorites.map((item, index) => (
-					<Card key={index} item={item} user={user} setUser={setUser} />
-				))}
-			</div>
+			{user?.favorites?.length ? (
+				<div className="list">
+					{user.favorites.map(item => (
+						<Card key={item.id} item={item} user={user} setUser={setUser} />
+					))}
+				</div>
+			) : (
+				<p>
+					You have no favorites. Why not to browse <Link to="/">anime</Link>?
+				</p>
+			)}
 		</Container>
-	) : (
-		<div>You have no favorites. Why not to browse anime?</div>
 	)
 }
 
@@ -71,9 +75,8 @@ const Card = ({ item, user, setUser }) => {
 		setloading(true)
 		const { data = null, message } = await removeFavorite(page_id)
 		setMessage(message)
-		if (!data) return
+		if (!data) return null
 		setUser({ ...user, favorites: data })
-		setloading(false)
 	}
 	return (
 		<CardContainer>

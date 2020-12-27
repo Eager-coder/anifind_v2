@@ -24,6 +24,7 @@ app.use("/api/user/comments", require("./routes/user/comments"))
 app.use("/api/user/favorites", require("./routes/user/favorites"))
 app.use("/api/user/avatar", require("./routes/user/avatar"))
 app.use("/api/user/update", require("./routes/user/auth.update"))
+app.use("/api/user/profile", require("./routes/user/profile"))
 
 const PORT = process.env.PORT || 80
 

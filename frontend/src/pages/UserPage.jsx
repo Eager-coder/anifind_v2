@@ -9,7 +9,7 @@ import Profile from "../components/User/Profile"
 import Comments from "../components/User/Comments"
 import Discussions from "../components/User/Discussions"
 import Settings from "../components/User/Settings"
-
+import { logout } from "../api/user/auth"
 const Container = styled.div`
 	max-width: 1200px;
 	padding: 0 50px;
@@ -27,9 +27,10 @@ const Container = styled.div`
 export default function User() {
 	const { user, setUser } = useContext(UserContext)
 	const { category } = useParams()
-	const handleClick = () => {
-		localStorage.removeItem("auth")
-		setUser(null)
+	const handleLogout = async () => {
+		const { message, isSuccess } = await logout()
+		console.log(message)
+		if (isSuccess) return setUser(null)
 	}
 
 	if (user)
@@ -37,7 +38,7 @@ export default function User() {
 			<Container>
 				<div className="flex">
 					<Sidebar category={category} />
-					{category === "profile" && <Profile user={user} />}
+					{category === "profile" && <Profile user={user} setUser={setUser} />}
 					{category === "favorites" && (
 						<Favorites user={user} setUser={setUser} />
 					)}
@@ -51,8 +52,7 @@ export default function User() {
 						<Settings user={user} setUser={setUser} />
 					)}
 				</div>
-				<button onClick={handleClick}>Logout</button>
-				{/* <UploadAvatar user={user} setUser={setUser} /> */}
+				<button onClick={handleLogout}>Logout</button>
 			</Container>
 		)
 	return <div>Loading...</div>

@@ -20,4 +20,14 @@ const postComment = async (comment, page_id) => {
 	return data
 }
 
-export { getComments, postComment, getUserComments }
+const deleteComment = async comment_id => {
+	const res = await fetch(
+		`${api_url}/api/user/comments/${comment_id}`,
+		options("DELETE")
+	)
+	const { message } = await res.json()
+
+	return { message, isSuccess: res.ok }
+}
+
+export { getComments, postComment, getUserComments, deleteComment }

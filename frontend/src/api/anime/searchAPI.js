@@ -29,7 +29,6 @@ const searchQuery = async variables => {
       }
     }
     `
-	console.log("graphql vars", variables)
 	const url = "https://graphql.anilist.co",
 		options = {
 			method: "POST",

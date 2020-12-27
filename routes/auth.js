@@ -37,11 +37,16 @@ router.post("/register", async (req, res) => {
 				expiresIn: "3d",
 			}
 		)
-		return res.status(201).json({
-			token,
-			message: "You are registered!",
-			data: { username, email },
-		})
+		res
+			.cookie("auth", token, {
+				expiresIn: 3600 * 1000 * 48,
+				httpOnly: true,
+			})
+			.status(201)
+			.json({
+				message: "You are registered!",
+				data: { username, email },
+			})
 	} catch (e) {
 		console.error(e)
 		res.status(500).json({ message: "Something went wrong" })
@@ -92,6 +97,10 @@ router.post("/login", async (req, res) => {
 		res.status(500).json({ message: "Something went wrong" })
 		console.log("login error", e)
 	}
+})
+
+router.delete("/logout", checkAuth, async (req, res) => {
+	res.clearCookie("auth").json({ message: "You have logged out" })
 })
 
 router.get("/", checkAuth, async (req, res) => {

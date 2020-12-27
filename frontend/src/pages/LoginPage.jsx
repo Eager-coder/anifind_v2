@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { loginHandler } from "../api/user/auth"
+import { getFavorites } from "../api/user/favorite"
 import UserContext from "../UserContext"
 
 const Div = styled.div`
@@ -44,11 +45,12 @@ export default function Login() {
 	const handleSubmit = async e => {
 		e.preventDefault()
 		setLoading(true)
-		const { data, message } = await loginHandler(form)
+		const { data: userData, message } = await loginHandler(form)
 		setLoading(false)
 		setMessage(message)
-		if (data) {
-			setUser(data)
+		if (userData) {
+			const favorites = await getFavorites()
+			setUser({ ...userData, favorites })
 		}
 	}
 

@@ -9,7 +9,7 @@ export default function Discussions({ user, setUser }) {
 	return (
 		<DiscussionsContainer>
 			<h1>Discussions</h1>
-			<p>This section is under development...</p>
+			<p>Coming soon...</p>
 		</DiscussionsContainer>
 	)
 }

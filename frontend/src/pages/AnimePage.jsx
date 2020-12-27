@@ -26,7 +26,6 @@ export default function Anime({ match }) {
 	const handleFavorites = async () => {
 		if (user) {
 			const { data: favorites, message } = await addToFavorites(
-				user.user_id,
 				page_id,
 				data.coverImage.extraLarge,
 				data.title.english || data.title.romaji

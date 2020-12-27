@@ -70,9 +70,9 @@ export default function Search() {
 				hasMore={true}>
 				<div className="grid">
 					{result.length
-						? result.map((e, index) => <Card item={e} key={index} />)
+						? result.map(e => <Card item={e} key={e.id} />)
 						: array.map(item => (
-								<CardBox>
+								<CardBox key={item}>
 									<SkeletonTheme highlightColor="#a7dac7" color="#cad4de">
 										<Skeleton key={item} className="mask" />
 									</SkeletonTheme>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import styled from "styled-components"
-
+import { format, parseISO } from "date-fns"
+import { getProfile } from "../../api/user/profile"
 const ProfileContainer = styled.section`
 	h1 {
 		font-size: 2.5rem;
@@ -37,7 +38,20 @@ const ProfileContainer = styled.section`
 		}
 	}
 `
-export default function Profile({ user }) {
+export default function Profile({ user, setUser }) {
+	// const date = format(parseISO(user.created_at), "MMMM y")
+
+	useEffect(() => {
+		if (!user.created_at) {
+			getProfile().then(({ created_at, about }) => {
+				setUser({
+					...user,
+					created_at: format(parseISO(created_at), "MMMM y"),
+					about,
+				})
+			})
+		}
+	}, [])
 	return (
 		<ProfileContainer>
 			<h1>Profile</h1>
@@ -47,16 +61,12 @@ export default function Profile({ user }) {
 				</div>
 				<div className="text">
 					<h2>{user.username}</h2>
-					<p>Member since December 2020</p>
+					<p>Member since {user?.created_at}</p>
 				</div>
 			</div>
 			<div className="about-user">
 				<h2>About me</h2>
-				<p>
-					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet
-					libero sit sint perferendis natus sed adipisci voluptas praesentium
-					recusandae. Similique quasi accusantium odit error voluptatem?
-				</p>
+				<p>{user.about ? user.about : "Write about yourself"}</p>
 			</div>
 		</ProfileContainer>
 	)

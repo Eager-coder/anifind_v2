@@ -100,11 +100,16 @@ export default function OptionList({ item, location, history }) {
 	const [isOpen, setIsOpen] = useState(false)
 	const listEl = useRef()
 	const ul = useRef()
+
 	useEffect(() => {
-		document.addEventListener("click", e => {
-			if (e.target !== listEl.current) setIsOpen(false)
-		})
+		window.addEventListener("click", closeList)
+		return () => window.removeEventListener("click", closeList)
 	}, [listEl])
+
+	const closeList = e => {
+		if (e.target !== listEl.current) setIsOpen(false)
+	}
+
 	const filterByOption = option => {
 		const params = { ...getUrlObj(location.search), [option.type]: option.id }
 		const url = new URLSearchParams(params).toString()
