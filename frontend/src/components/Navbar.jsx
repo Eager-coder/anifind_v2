@@ -74,7 +74,7 @@ export default function Navbar({ user, theme, switchTheme }) {
 						src={`/assets/icons/${theme === "dark" ? "moon" : "sun"}.svg`}
 						alt=""
 					/>
-					{user ? (
+					{user.isLoggedIn ? (
 						<Link to={`/me/profile`}>{user.username}</Link>
 					) : (
 						<>

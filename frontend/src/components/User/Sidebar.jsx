@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 
@@ -10,10 +9,10 @@ const SideNav = styled.aside`
 	.links {
 		list-style: none;
 		li {
-			width: 100%;
+			width: max-content;
 			a {
 				display: block;
-				width: 100%;
+				width: max-content;
 				margin: 10px 0;
 				font-size: 1.5rem;
 			}
@@ -39,7 +38,6 @@ const SideNav = styled.aside`
 	}
 `
 export default function Sidebar({ category }) {
-	const link = "profile"
 	return (
 		<SideNav>
 			<ul className="links">

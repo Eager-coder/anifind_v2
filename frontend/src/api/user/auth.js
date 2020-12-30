@@ -13,10 +13,7 @@ export const loginHandler = async form => {
 	const res = await fetch(`${api_url}/api/auth/login`, options("POST", form))
 	const { message, data } = await res.json()
 
-	if (res.ok) {
-		return { data, message }
-	}
-	return { message }
+	return { data, message, isSuccess: res.ok }
 }
 
 export const registerHandler = async form => {
@@ -24,10 +21,7 @@ export const registerHandler = async form => {
 	console.log(res)
 	const { message, data } = await res.json()
 
-	if (res.ok) {
-		return { data, message }
-	}
-	return { message }
+	return { data, message, isSuccess: res.ok }
 }
 
 export const logout = async () => {
