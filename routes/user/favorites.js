@@ -8,7 +8,7 @@ router.get("/", checkAuth, async (req, res) => {
 	const { user_id } = req.user
 	try {
 		const { rows } = await pool.query(`
-      SELECT * FROM favorites WHERE user_id = '${user_id}'
+      SELECT * FROM favorites WHERE user_id = '${user_id}' ORDER BY created_at DESC
     `)
 		res.json({ data: rows })
 	} catch (e) {
@@ -21,14 +21,12 @@ router.post("/", checkAuth, async (req, res) => {
 	const { user_id } = req.user
 	const { page_id, cover_image, title } = req.body
 	try {
-		const returning = await pool.query(`
+		await pool.query(`
       INSERT INTO favorites (page_id, user_id, cover_image, title)
 			VALUES ('${page_id}','${user_id}','${cover_image}','${title}')
 		`)
-		const { rows } = await pool.query(`
-		 SELECT * FROM favorites WHERE user_id = '${user_id}'
-		`)
-		res.json({ message: "Added to Favorites!", data: rows })
+
+		res.json({ message: "Added to Favorites!" })
 	} catch (e) {
 		console.error(chalk.bgRed("POST FAVORITES"), e)
 		res.status(500).json({ message: "Something went wrong" })

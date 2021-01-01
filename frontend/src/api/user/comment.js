@@ -11,13 +11,14 @@ export const getUserComments = async () => {
 	const { data } = await res.json()
 	return data
 }
+
 export const postComment = async (comment, page_id) => {
 	const res = await fetch(
 		`${api_url}/api/user/comments`,
 		options("POST", { comment, page_id })
 	)
-	const { data } = await res.json()
-	return data
+	const { data, message } = await res.json()
+	return { data, message, isSuccess: res.ok }
 }
 
 export const updateComment = async (newComment, comment_id) => {

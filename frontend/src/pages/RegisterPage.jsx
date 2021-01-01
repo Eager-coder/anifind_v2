@@ -135,7 +135,6 @@ const RegisterEl = styled.div`
 			padding: 50px;
 			margin: 0;
 			max-width: 100%;
-			/* height: 80vh; */
 		}
 	}
 	@media (max-width: 480px) {
@@ -143,7 +142,6 @@ const RegisterEl = styled.div`
 			padding: 50px 20px;
 			margin: 0;
 			max-width: 100%;
-			/* height: 80vh; */
 		}
 	}
 `

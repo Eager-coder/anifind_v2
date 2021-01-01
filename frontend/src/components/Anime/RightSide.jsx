@@ -1,6 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
+import { PrimaryBtn } from "../ButtonStyles"
+
 const Section = styled.section`
 	width: 60%;
 	margin-left: 50px;
@@ -37,22 +39,7 @@ const Section = styled.section`
 		}
 	}
 	.add-btn {
-		cursor: pointer;
-		border: none;
-		border-radius: 4px;
-		background-color: #70c7a7;
-		width: max-content;
-		padding: 3px 5px;
-		color: whitesmoke;
-		transition: 0.2s;
-		box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
-		&:hover {
-			background-color: #5d9e86;
-			color: white;
-		}
-		&:disabled {
-			background-color: grey;
-		}
+		display: none;
 	}
 	@media screen and (max-width: 768px) {
 		width: 100%;
@@ -71,16 +58,20 @@ const Section = styled.section`
 				width: 30%;
 				height: auto;
 				margin-right: 15px;
+
 				.mobile-img {
 					display: block;
 					width: 100%;
+					margin-bottom: 15px;
 				}
 			}
 		}
 		.genres {
 			margin-top: 5px;
 		}
-
+		.add-btn {
+			display: block;
+		}
 		@media screen and (max-width: 480px) {
 			margin-top: 20px;
 			h1 {
@@ -120,15 +111,16 @@ export default function RightSide({ data, handleFavorites, isFavorite }) {
 			<div className="img-and-desc">
 				<div className="mobile-img-cont">
 					<img className="mobile-img" src={data.coverImage.extraLarge} alt="" />
+					<PrimaryBtn
+						disabled={isFavorite}
+						className="add-btn"
+						onClick={() => handleFavorites()}>
+						{isFavorite ? "Added" : "Add to Favorites"}
+					</PrimaryBtn>
 				</div>
 				<p dangerouslySetInnerHTML={{ __html: data.description }}></p>
 			</div>
-			<button
-				disabled={isFavorite}
-				className="add-btn"
-				onClick={() => handleFavorites()}>
-				{isFavorite ? "Added" : "Add to Favorites"}
-			</button>
+
 			<ul className="genres">
 				{data.genres.map((genre, index) => (
 					<Link key={index} to={`/search?genre=${genre}`}>

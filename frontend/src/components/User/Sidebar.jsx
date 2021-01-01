@@ -31,10 +31,32 @@ const SideNav = styled.aside`
 		}
 	}
 	@media (max-width: 1024px) {
-		width: 200px;
+		margin-right: 50px;
 	}
 	@media (max-width: 768px) {
 		width: 100%;
+		margin-bottom: 20px;
+		.links {
+			display: flex;
+			justify-content: space-between;
+			overflow-x: auto;
+			> :last-child {
+				margin-right: 0 !important;
+			}
+			li {
+				margin-right: 25px;
+				a {
+					font-size: 1rem;
+				}
+			}
+		}
+		.link-active {
+			a {
+				border-left: none;
+				padding-left: 0px;
+				color: #70c7a7;
+			}
+		}
 	}
 `
 export default function Sidebar({ category }) {

@@ -4,27 +4,35 @@ import { uploadAvatar } from "../../../api/user/user.update"
 import { PrimaryBtn } from "../../ButtonStyles"
 
 const Container = styled.div`
-	h2 {
-		font-size: 2rem;
-		margin-bottom: 20px;
-	}
 	.avatar {
 		display: flex;
 		margin-bottom: 20px;
 	}
 	img {
-		width: 250px;
-		height: 250px;
 		object-fit: cover;
 		margin-left: 20px;
 		border-radius: 4px;
+	}
+	.image {
+		width: 250px;
+		height: 250px;
+	}
+	@media (max-width: 1024px) {
+		.image {
+			width: 200px;
+			height: 200px;
+		}
+	}
+	@media (max-width: 480px) {
+		.image {
+			width: 130px;
+			height: 130px;
+		}
 	}
 `
 const InputSquare = styled.div`
 	cursor: pointer;
 	border-radius: 4px;
-	width: 250px;
-	height: 250px;
 	background: ${({ theme }) => theme.commentBg};
 	padding: 20px;
 	.line {
@@ -39,6 +47,15 @@ const InputSquare = styled.div`
 		}
 		p {
 			text-align: center;
+		}
+	}
+	@media (max-width: 480px) {
+		padding: 10px;
+
+		.line {
+			p {
+				font-size: 0.9rem;
+			}
 		}
 	}
 `
@@ -83,7 +100,7 @@ export default function Avatar({ user, setUser }) {
 		<Container>
 			<h2>Avatar</h2>
 			<div className="avatar">
-				<InputSquare onClick={() => inputRef.current.click()}>
+				<InputSquare className="image" onClick={() => inputRef.current.click()}>
 					<div className="line">
 						<p>{message ? message : "Click to choose an image"}</p>
 						<input
@@ -96,9 +113,9 @@ export default function Avatar({ user, setUser }) {
 					</div>
 				</InputSquare>
 				{previewImg ? (
-					<img src={previewImg} />
+					<img className="image" src={previewImg} />
 				) : (
-					<img src={user.avatar} alt="" />
+					<img className="image" src={user.avatar} alt="" />
 				)}
 			</div>
 			<PrimaryBtn disabled={!fileInput} onClick={handleSubmit}>

@@ -9,6 +9,6 @@ module.exports = (req, res, next) => {
 		next()
 	} catch (e) {
 		console.error(chalk.bgRed("VERIFY TOKEN"), e)
-		res.status(401).send()
+		res.status(401).json({ message: "Access denied" })
 	}
 }

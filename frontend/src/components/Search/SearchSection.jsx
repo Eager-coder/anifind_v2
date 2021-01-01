@@ -56,18 +56,16 @@ export default function SearchSection() {
 
 const FiltersBox = styled.div`
 	display: flex;
+	flex-wrap: wrap;
 	margin: 15px 0;
 	.filter {
-		color: white;
-		border-radius: 7px;
-		margin-right: 20px;
-		background: #4c5264;
-		width: max-content;
 		display: flex;
 		align-items: center;
-		height: 25px;
-		width: max-content;
-		padding: 0 4px;
+		color: white;
+		border-radius: 7px;
+		margin: 0 20px 20px 0;
+		background: #4c5264;
+		padding: 4px;
 	}
 	img {
 		margin-left: 5px;

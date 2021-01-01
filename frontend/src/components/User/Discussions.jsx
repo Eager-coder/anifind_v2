@@ -1,10 +1,5 @@
 import styled from "styled-components"
-const DiscussionsContainer = styled.section`
-	h1 {
-		font-size: 2.5rem;
-		margin-bottom: 20px;
-	}
-`
+const DiscussionsContainer = styled.section``
 export default function Discussions({ user, setUser }) {
 	return (
 		<DiscussionsContainer>

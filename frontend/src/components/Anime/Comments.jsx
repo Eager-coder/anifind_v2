@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react"
+import { useEffect, useState, useContext } from "react"
 import styled from "styled-components"
 import {
 	getComments,
@@ -29,16 +29,16 @@ export default function Comments({ page_id }) {
 			})
 		}
 	}
-	const handleDelete = async comment_id => {
-		const { message, isSuccess } = await deleteComment(comment_id)
-		console.log(message)
-		if (isSuccess) {
-			const newCommentList = allComments.filter(
-				comment => comment.comment_id != comment_id
-			)
-			setAllComments(newCommentList)
-		}
-	}
+	// const handleDelete = async comment_id => {
+	// 	const { message, isSuccess } = await deleteComment(comment_id)
+	// 	console.log(message)
+	// 	if (isSuccess) {
+	// 		const newCommentList = allComments.filter(
+	// 			comment => comment.comment_id != comment_id
+	// 		)
+	// 		setAllComments(newCommentList)
+	// 	}
+	// }
 	return (
 		<Container>
 			<h2>Comments</h2>
@@ -172,7 +172,6 @@ const Comment = ({ item, user, setAllComments, page_id }) => {
 							Cancel
 						</GreenBtn>
 						<PrimaryBtn
-							style={{ fontSize: "1rem" }}
 							onClick={() => handleDelete(item.comment_id)}
 							className="submit"
 							disabled={loading}>
@@ -195,6 +194,12 @@ const Container = styled.section`
 	.all-comments {
 		margin-top: 20px;
 	}
+	@media (max-width: 768px) {
+		padding: 0 20px;
+		h2 {
+			font-size: 2rem;
+		}
+	}
 `
 const CommentForm = styled.form`
 	textarea {
@@ -205,6 +210,11 @@ const CommentForm = styled.form`
 		border: none;
 		padding: 10px;
 		margin-bottom: 10px;
+	}
+	@media (max-width: 768px) {
+		textarea {
+			font-size: 1rem;
+		}
 	}
 `
 

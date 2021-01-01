@@ -24,6 +24,23 @@ const Container = styled.div`
 	.preview-img {
 		height: 200px;
 	}
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 20px;
+	}
+	h2 {
+		font-size: 1.5rem;
+		margin-bottom: 15px;
+	}
+	@media (max-width: 768px) {
+		padding: 0 20px;
+		.flex {
+			display: block;
+		}
+		h1 {
+			font-size: 2rem;
+		}
+	}
 `
 export default function User() {
 	const { user, setUser } = useContext(UserContext)
@@ -47,6 +64,7 @@ export default function User() {
 				<div className="flex">
 					<Sidebar category={category} />
 					{category === "profile" && <Profile user={user} setUser={setUser} />}
+
 					{category === "favorites" && (
 						<Favorites user={user} setUser={setUser} />
 					)}

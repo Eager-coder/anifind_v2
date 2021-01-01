@@ -39,7 +39,7 @@ router.post("/", checkAuth, async (req, res) => {
 				AND comments.user_id = users.user_id
 			ORDER BY comments.created_at DESC
 		`)
-		res.json({ message: comment, data: allComments })
+		res.json({ message: "Comment has added", data: allComments })
 	} catch (e) {
 		console.error("~POST COMMENT~", e)
 		res.status(500).json({ message: "Something went wrong" })

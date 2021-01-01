@@ -1,7 +1,44 @@
-import React, { useState } from "react"
+import { useState, useEffect } from "react"
 import styled from "styled-components"
 import getUrlObj from "../../utlis/getUrlObj"
-const Div = styled.div`
+
+export default function SearchBox({ location, history, match }) {
+	const [query, setQuery] = useState(getUrlObj(location.search).query || "")
+
+	useEffect(() => {
+		const searchObj = getUrlObj(location.search)
+		if (!searchObj.query) {
+			setQuery("")
+		}
+	}, [location])
+
+	const handleSubmit = e => {
+		if (e.key === "Enter" && query.trim()) {
+			const newParams = { ...getUrlObj(location.search), query: query.trim() }
+			const url = new URLSearchParams(newParams).toString()
+			history.push("/search?" + url)
+		}
+	}
+
+	return (
+		<SearchBoxEl>
+			<h2>Search anime</h2>
+			<div className="input-container">
+				<img
+					src="https://img.icons8.com/ios-glyphs/100/000000/search.png"
+					alt="search"
+				/>
+				<input
+					type="text"
+					value={query}
+					onChange={e => setQuery(() => e.target.value)}
+					onKeyDown={handleSubmit}
+				/>
+			</div>
+		</SearchBoxEl>
+	)
+}
+const SearchBoxEl = styled.div`
 	width: 100%;
 	margin-top: 50px;
 	h2 {
@@ -53,32 +90,3 @@ const Div = styled.div`
 		}
 	}
 `
-
-export default function SearchBox({ location, history }) {
-	const [query, setQuery] = useState(getUrlObj(location.search).query || "")
-
-	const handleSubmit = e => {
-		if (e.key === "Enter" && query) {
-			const newParams = { ...getUrlObj(location.search), query }
-			const url = new URLSearchParams(newParams).toString()
-			history.push("/search?" + url)
-		}
-	}
-	return (
-		<Div>
-			<h2>Search anime</h2>
-			<div className="input-container">
-				<img
-					src="https://img.icons8.com/ios-glyphs/100/000000/search.png"
-					alt="search"
-				/>
-				<input
-					type="text"
-					value={query}
-					onChange={e => setQuery(() => e.target.value.trim())}
-					onKeyDown={handleSubmit}
-				/>
-			</div>
-		</Div>
-	)
-}

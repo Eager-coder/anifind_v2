@@ -1,12 +1,13 @@
 import React from "react"
 import styled from "styled-components"
-import { Link } from "react-router-dom"
+import { PrimaryBtn } from "../ButtonStyles"
 const Section = styled.section`
 	width: 35%;
 	img {
 		width: 100%;
 		border-radius: 5px;
 		box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+		margin-bottom: 15px;
 	}
 	.details {
 		margin: 20px 0;
@@ -45,6 +46,9 @@ const Section = styled.section`
 		.desktop-img {
 			display: none;
 		}
+		.add-btn {
+			display: none;
+		}
 	}
 	@media screen and (max-width: 480px) {
 		.details {
@@ -62,12 +66,12 @@ export default function LeftSide({ data, handleFavorites, isFavorite }) {
 	return (
 		<Section>
 			<img className="desktop-img" src={data.coverImage.extraLarge} alt="" />
-			<button
+			<PrimaryBtn
 				disabled={isFavorite}
 				className="add-btn"
 				onClick={() => handleFavorites()}>
 				{isFavorite ? "Added" : "Add to Favorites"}
-			</button>
+			</PrimaryBtn>
 			<ul className="details">
 				<li>
 					Season

@@ -16,8 +16,4 @@ export default function Settings({ user, setUser }) {
 
 const SettingsContainer = styled.div`
 	width: 100%;
-	h1 {
-		font-size: 2.5rem;
-		margin-bottom: 20px;
-	}
 `

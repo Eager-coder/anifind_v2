@@ -37,7 +37,11 @@ export default function Carousel({ header, list }) {
 						? list.map((item, index) => (
 								<Link key={index} to={`/anime/${item.id}`}>
 									<div className="card">
-										<img src={item.coverImage.extraLarge} alt="" />
+										<img
+											className="card-img"
+											src={item.coverImage.extraLarge}
+											alt=""
+										/>
 										<p>{item.title.english || item.title.romaji}</p>
 									</div>
 								</Link>
@@ -45,11 +49,11 @@ export default function Carousel({ header, list }) {
 						: skeletonArray.map(item => (
 								<div key={item} className="card">
 									<SkeletonTheme highlightColor="#a7dac7" color="#cad4de">
-										<Skeleton width="150px" height="210px" key={item} />
+										<Skeleton className="card-img" key={item} />
 									</SkeletonTheme>
 									<br />
 									<SkeletonTheme highlightColor="#a7dac7" color="#cad4de">
-										<Skeleton width="150px" height="10px" key={item} />
+										<Skeleton width="120px" height="10px" key={item} />
 									</SkeletonTheme>
 								</div>
 						  ))}
@@ -101,7 +105,7 @@ const Section = styled.section`
 		.card {
 			margin-right: 15px;
 			width: 150px;
-			img {
+			.card-img {
 				border-radius: 7px;
 				width: 150px;
 				height: 210px;
@@ -171,7 +175,7 @@ const Section = styled.section`
 		.card-container {
 			.card {
 				width: 120px;
-				img {
+				.card-img {
 					width: 120px;
 					height: 170px;
 				}

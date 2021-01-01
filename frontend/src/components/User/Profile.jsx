@@ -97,10 +97,7 @@ export default function Profile({ user, setUser }) {
 
 const ProfileContainer = styled.section`
 	width: 100%;
-	h1 {
-		font-size: 2.5rem;
-		margin-bottom: 20px;
-	}
+
 	.top {
 		display: flex;
 		margin-bottom: 50px;
@@ -113,12 +110,6 @@ const ProfileContainer = styled.section`
 				object-fit: cover;
 			}
 		}
-		.text {
-			h2 {
-				font-size: 2rem;
-				margin-bottom: 15px;
-			}
-		}
 	}
 	.about-user {
 		.about-header {
@@ -126,10 +117,7 @@ const ProfileContainer = styled.section`
 			justify-content: space-between;
 			align-items: center;
 		}
-		h2 {
-			font-size: 2rem;
-			margin-bottom: 15px;
-		}
+
 		p {
 			background: ${({ theme }) => theme.commentBg};
 			border-radius: 4px;

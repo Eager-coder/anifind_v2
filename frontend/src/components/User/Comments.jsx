@@ -6,6 +6,7 @@ import { formatRelative } from "date-fns"
 import Modal from "../../components/Modal"
 import { deleteComment, updateComment } from "../../api/user/comment"
 import { PrimaryBtn, GreenBtn, RedBtn } from "../ButtonStyles"
+import EmptyState from "../EmptyState"
 export default function Comments({ user, setUser }) {
 	useEffect(() => {
 		getUserComments().then(comments => setUser({ ...user, comments }))
@@ -14,14 +15,21 @@ export default function Comments({ user, setUser }) {
 		<CommentsContainer>
 			<h1>All comments</h1>
 			<div>
-				{user?.comments?.map(item => (
-					<Comment
-						key={item.comment_id}
-						item={item}
-						user={user}
-						setUser={setUser}
+				{user?.comments?.length ? (
+					user.comments.map(item => (
+						<Comment
+							key={item.comment_id}
+							item={item}
+							user={user}
+							setUser={setUser}
+						/>
+					))
+				) : (
+					<EmptyState
+						src="/assets/images/empty_comments.png"
+						header="You have no comments"
 					/>
-				))}
+				)}
 			</div>
 		</CommentsContainer>
 	)
@@ -119,10 +127,6 @@ const Comment = ({ item, user, setUser }) => {
 
 const CommentsContainer = styled.section`
 	width: 100%;
-	h1 {
-		font-size: 2.5rem;
-		margin-bottom: 20px;
-	}
 `
 const CommentBox = styled.div`
 	border-radius: 4px;

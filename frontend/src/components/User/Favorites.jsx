@@ -4,10 +4,6 @@ import { Link } from "react-router-dom"
 import { removeFavorite } from "../../api/user/favorite"
 const Container = styled.section`
 	width: 100%;
-	h1 {
-		margin-bottom: 20px;
-		font-size: 2.5rem;
-	}
 	.list {
 		width: 100%;
 		display: grid;
