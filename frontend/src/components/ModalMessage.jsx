@@ -12,13 +12,13 @@ const Container = styled.div`
 	padding: 10px;
 	border-radius: 4px;
 	height: max-content;
-	min-width: 400px;
-	max-width: max-content;
+	width: 400px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	p {
 		color: ${({ isSuccess }) => (isSuccess ? "#00915c" : "#C2185B")};
+		margin-right: 10px;
 	}
 	span {
 		font-size: 1.2rem;
@@ -43,6 +43,12 @@ const Container = styled.div`
 		transform: translate(-50%, 0px);
 		transition: 200ms;
 		opacity: 0;
+	}
+	@media (max-width: 480px) {
+		width: calc(100% - 40px);
+		p {
+			font-size: 0.9rem;
+		}
 	}
 `
 

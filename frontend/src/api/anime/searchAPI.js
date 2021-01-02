@@ -22,6 +22,8 @@ const searchQuery = async variables => {
 						userPreferred
 					} 
           coverImage {
+						medium
+						large
 						extraLarge
 						color
           }

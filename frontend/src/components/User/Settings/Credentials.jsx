@@ -70,9 +70,9 @@ const ChangeModal = ({ user, setUser, type, setIsModalOpen, setMessage }) => {
 			const { data, message, isSuccess } = await changeUsername(newUsername)
 			setMessage({ text: message, isSuccess })
 			setLoading(false)
-			setIsModalOpen(false)
 			if (isSuccess) {
 				setUser({ ...user, username: data })
+				setIsModalOpen(false)
 			}
 		}
 	}

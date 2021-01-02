@@ -43,7 +43,7 @@ export default function Profile({ user, setUser }) {
 		}
 	}
 	return (
-		<ProfileContainer>
+		<ProfileEl>
 			<h1>Profile</h1>
 			<div className="top">
 				<div className="avatar">
@@ -91,11 +91,11 @@ export default function Profile({ user, setUser }) {
 				)}
 			</div>
 			<ModalMessage message={message} setMessage={setMessage} />
-		</ProfileContainer>
+		</ProfileEl>
 	)
 }
 
-const ProfileContainer = styled.section`
+const ProfileEl = styled.section`
 	width: 100%;
 
 	.top {
@@ -117,7 +117,6 @@ const ProfileContainer = styled.section`
 			justify-content: space-between;
 			align-items: center;
 		}
-
 		p {
 			background: ${({ theme }) => theme.commentBg};
 			border-radius: 4px;
@@ -138,6 +137,22 @@ const ProfileContainer = styled.section`
 			font-size: 1rem;
 			color: ${({ theme }) => theme.text};
 			background: ${({ theme }) => theme.commentBg};
+		}
+	}
+	@media (max-width: 480px) {
+		.top {
+			.avatar {
+				margin-right: 30px;
+				img {
+					width: 130px;
+					height: 130px;
+				}
+			}
+			.text {
+				p {
+					font-size: 0.9rem;
+				}
+			}
 		}
 	}
 `

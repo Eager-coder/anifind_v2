@@ -34,6 +34,7 @@ const Container = styled.div`
 	}
 	@media (max-width: 768px) {
 		padding: 0 20px;
+		margin: 20px auto;
 		.flex {
 			display: block;
 		}

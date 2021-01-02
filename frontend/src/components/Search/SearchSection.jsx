@@ -101,11 +101,7 @@ const SelectedFilters = ({ history, location }) => {
 					<span>
 						<b>{e.type}:</b> {e.value}
 					</span>
-					<img
-						onClick={() => removeFilter(e)}
-						src="./assets/icons/x.svg"
-						alt=""
-					/>
+					<img onClick={() => removeFilter(e)} src="./assets/icons/x.svg" />
 				</div>
 			))}
 		</FiltersBox>

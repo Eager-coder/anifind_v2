@@ -6,19 +6,19 @@ import { Link } from "react-router-dom"
 export const Card = ({ item }) => {
 	const [loaded, setLoaded] = useState(false)
 	const title = item.title.english ? item.title.english : item.title.romaji
-	const image = item.coverImage.extraLarge
+	const image = item.coverImage.large
 	const bgColor = item.coverImage.color
 
 	return (
 		<CardBox bgColor={bgColor}>
 			<Link to={`/anime/${item.id}`}>
 				<img
-					style={loaded ? {} : { display: "none" }}
+					// style={loaded ? {} : { display: "none" }}
 					src={image}
-					alt=""
+					alt={title}
 					onLoad={() => setLoaded(true)}
 				/>
-				{loaded ? null : <div className="mask"></div>}
+				{/* {loaded ? null : <div className="mask"></div>} */}
 				<p>{title}</p>
 			</Link>
 		</CardBox>

@@ -12,6 +12,7 @@ const ModalContainer = styled.div`
 	justify-content: center;
 
 	.container {
+		width: max-content;
 		background: ${({ theme }) => theme.commentBg};
 		padding: 25px;
 		border-radius: 4px;
@@ -29,6 +30,18 @@ const ModalContainer = styled.div`
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+	@media (max-width: 768px) {
+		.container {
+			width: calc(100% - 40px);
+			textarea {
+				width: 100%;
+				font-size: 0.95rem;
+			}
+			input {
+				width: 100%;
+			}
+		}
 	}
 `
 export default function Modal({ children }) {
