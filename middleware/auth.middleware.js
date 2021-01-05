@@ -1,5 +1,6 @@
 const { verify } = require("jsonwebtoken")
 const chalk = require("chalk")
+// fef223r2
 module.exports = (req, res, next) => {
 	try {
 		const token = req.cookies.auth
