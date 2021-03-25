@@ -1,24 +1,27 @@
-import { useState, useContext, useEffect } from "react"
+import { useState, useEffect, memo } from "react"
 import { Link, useHistory } from "react-router-dom"
 import styled from "styled-components"
-import { loginHandler } from "../api/user/auth"
-import { getFavorites } from "../api/user/favorite"
-import UserContext from "../UserContext"
+import { useDispatch, useSelector } from "react-redux"
 import { PrimaryBtn } from "../components/ButtonStyles"
 import ModalMessage from "../components/ModalMessage"
+import { login } from "../redux/actions/authActions"
+import LoadingSpinner from "../components/LoadingSpinner"
+import { ClipLoader } from "react-spinners"
+import { getUser } from "../redux/actions/userActions"
+import { getFavAnimes, getFavCharacters } from "../redux/actions/favActions"
 
-export default function Login() {
+const Login = () => {
 	const [form, setForm] = useState({ email: null, password: null })
-	const [loading, setLoading] = useState(false)
 	const [message, setMessage] = useState({ text: null, isSuccess: false })
-	const { user, setUser } = useContext(UserContext)
 	const history = useHistory()
+	const dispatch = useDispatch()
+	const { isLoggedIn, isLoading } = useSelector(state => state.user)
 
 	useEffect(() => {
-		if (user.isLoggedIn) {
-			history.push("/me/profile")
+		if (isLoggedIn) {
+			history.goBack()
 		}
-	}, [user])
+	}, [isLoggedIn])
 
 	const handleChange = e => {
 		setForm({ ...form, [e.target.name]: e.target.value })
@@ -26,20 +29,19 @@ export default function Login() {
 
 	const handleSubmit = async e => {
 		e.preventDefault()
-		setLoading(true)
-		const { data: userData, message, isSuccess } = await loginHandler(form)
-		setLoading(false)
-		setMessage({ text: message, isSuccess })
-		if (userData) {
-			const favorites = await getFavorites()
-			setUser({ ...userData, favorites, isLoggedIn: true, isLoading: false })
-		}
+		dispatch(login(form.email, form.password)).then(isRegistered => {
+			if (isRegistered) {
+				dispatch(getUser())
+				dispatch(getFavAnimes())
+				dispatch(getFavCharacters())
+			}
+		})
 	}
-
 	return (
 		<LoginEl>
 			<div className="form-container">
 				<h1>Log in</h1>
+
 				<form onSubmit={handleSubmit}>
 					<input
 						name="email"
@@ -47,6 +49,7 @@ export default function Login() {
 						onChange={handleChange}
 						placeholder="Email"
 						required
+						autoComplete="email"
 					/>
 					<input
 						name="password"
@@ -54,12 +57,17 @@ export default function Login() {
 						onChange={handleChange}
 						placeholder="Password"
 						required
+						autoComplete="password"
 					/>
 					<PrimaryBtn
-						disabled={loading}
+						disabled={isLoading}
 						type="submit"
-						style={{ fontSize: "1rem", padding: "8px 24px" }}>
-						Log in
+						style={{
+							fontSize: "1rem",
+							width: "120px",
+							height: "40px",
+						}}>
+						{isLoading ? <ClipLoader color="#fff" size="25" /> : "Log in"}
 					</PrimaryBtn>
 					<p>
 						Don't have an accound? <Link to="/register">Sign up</Link>
@@ -70,6 +78,9 @@ export default function Login() {
 		</LoginEl>
 	)
 }
+
+export default memo(Login)
+
 const LoginEl = styled.div`
 	max-width: 1200px;
 	padding: 0 50px;

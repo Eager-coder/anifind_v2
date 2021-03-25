@@ -40,7 +40,8 @@ export const SkeletonCard = ({ item }) => {
 }
 
 const CardBox = styled.div`
-	width: 180px;
+	width: 100%;
+
 	a {
 		display: block;
 		color: ${({ theme }) => theme.text};
@@ -48,12 +49,14 @@ const CardBox = styled.div`
 	img,
 	.mask {
 		width: 100%;
-		height: 255px;
+		height: auto;
+		/* height: 255px; */
 		object-fit: cover;
+		aspect-ratio: auto 2 / 3;
 		border-radius: 8px;
 		background: ${({ bgColor }) => bgColor};
 	}
-	@media (max-width: 1100px) {
+	/* @media (max-width: 1100px) {
 		width: 150px;
 		img,
 		.mask {
@@ -109,5 +112,5 @@ const CardBox = styled.div`
 		.mask {
 			height: 210px;
 		}
-	}
+	} */
 `

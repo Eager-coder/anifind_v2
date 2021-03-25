@@ -1,44 +1,42 @@
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
+import { formatDistanceToNow, isAfter } from "date-fns"
+import { PrimaryBtn, RedBtn, GreenBtn } from "../ButtonStyles"
+import { useDispatch, useSelector } from "react-redux"
 import {
+	editComment,
 	getComments,
 	postComment,
-	deleteComment,
-	updateComment,
-} from "../../api/user/comment"
-import UserContext from "../../UserContext"
-import { formatDistanceToNow } from "date-fns"
-import Modal from "../Modal"
-import { PrimaryBtn, RedBtn, GreenBtn } from "../ButtonStyles"
-
-export default function Comments({ page_id }) {
-	const [allComments, setAllComments] = useState(null)
-	const [text, setText] = useState("")
-	const { user } = useContext(UserContext)
+} from "../../redux/actions/commentActions"
+import LoadingSpinner from "../LoadingSpinner"
+import { showModal } from "../../redux/actions/appActions"
+import { DELETE_COMMENT } from "../../redux/types"
+import { Link } from "react-router-dom"
+import {
+	fetchAnimeComments,
+	syncUserPageComments,
+} from "../../redux/actions/pageActions"
+export default function Comments({ anime_id }) {
+	const allComments = useSelector(state => state.currentPage.comments.data)
+	// const [allComments, setAllComments] = useState(null)
+	const user = useSelector(state => state.user)
+	const { isSending, isLoading } = useSelector(state => state.comments)
+	const dispatch = useDispatch()
 
 	useEffect(() => {
-		getComments(page_id).then(data => setAllComments(data))
+		dispatch(fetchAnimeComments(anime_id))
 	}, [])
 
+	const [text, setText] = useState("")
 	const handleSubmit = async e => {
 		e.preventDefault()
 		if (user && text.trim()) {
-			postComment(text, page_id).then(data => {
+			dispatch(postComment(text, anime_id)).then(() => {
 				setText("")
-				setAllComments(data)
 			})
 		}
 	}
-	// const handleDelete = async comment_id => {
-	// 	const { message, isSuccess } = await deleteComment(comment_id)
-	// 	console.log(message)
-	// 	if (isSuccess) {
-	// 		const newCommentList = allComments.filter(
-	// 			comment => comment.comment_id != comment_id
-	// 		)
-	// 		setAllComments(newCommentList)
-	// 	}
-	// }
+
 	return (
 		<Container>
 			<h2>Comments</h2>
@@ -51,20 +49,21 @@ export default function Comments({ page_id }) {
 				<br />
 				<PrimaryBtn
 					type="submit"
+					disabled={isSending}
 					style={{ fontSize: "1.2rem", padding: "5px 10px" }}>
 					Send
 				</PrimaryBtn>
 			</CommentForm>
 			<div className="all-comments">
+				{isLoading ? <LoadingSpinner /> : null}
 				{allComments &&
 					allComments.map(item => (
 						<Comment
 							key={item.comment_id}
 							item={item}
-							user={user}
+							user_id={user.user_id}
 							allComments={allComments}
-							setAllComments={setAllComments}
-							page_id={page_id}
+							anime_id={anime_id}
 						/>
 					))}
 			</div>
@@ -72,60 +71,61 @@ export default function Comments({ page_id }) {
 	)
 }
 
-const Comment = ({ item, user, setAllComments, page_id }) => {
+const Comment = ({ item, user_id }) => {
+	// const [comment, setComment] = useState(item)
+	const dispatch = useDispatch()
 	const [newComment, setNewComment] = useState(item.text)
 	const [isEditOpen, setIsEditOpen] = useState(false)
-	const [isDeleteOpen, setIsDeleteOpen] = useState(false)
-	const [loading, setLoading] = useState(false)
-
-	const handleDelete = async comment_id => {
-		setLoading(true)
-		const { isSuccess } = await deleteComment(comment_id)
-		if (isSuccess) {
-			getComments(page_id).then(data => setAllComments(data))
-			setIsDeleteOpen(false)
-			setLoading(false)
+	const link =
+		item.user_id === user_id ? "/me/profile" : `/user/${item.username}`
+	useEffect(() => {
+		if (isEditOpen && !userComment.pending) {
+			setIsEditOpen(false)
 		}
-	}
+	}, [item])
+	const userComments = useSelector(state => state.comments.list)
+	const userComment = useSelector(state =>
+		state.comments.list.filter(item => {
+			if (item.user_id == user_id) return item
+		})
+	)[0]
 
-	const hanldeEdit = async comment_id => {
-		if (!newComment || newComment != item.text) {
-			setLoading(true)
-			const { isSuccess } = await updateComment(newComment, comment_id)
-			if (isSuccess) {
-				getComments(page_id).then(data => setAllComments(data))
-				setIsEditOpen(false)
-				setLoading(false)
-			}
-		}
-	}
+	useEffect(() => {
+		if (userComment?.user_id == item.user_id) console.log(userComment)
+	}, [userComments])
 
 	return (
 		<CommentBox>
 			<div className="top-bar">
-				<div className="user-data">
-					<img src={item.avatar} alt="" />
-					<span className="username">{item.username}</span>
+				<div className="comment-data">
+					<Link to={link} className="user-data">
+						<img src={item.avatar} alt="" />
+						<span className="username">{item.username}</span>
+					</Link>
 					<span className="date">
 						{formatDistanceToNow(new Date(item.created_at * 1000))} ago{" "}
 						{item.is_edited && "(edited)"}
 					</span>
 				</div>
-				{user?.user_id == item.user_id && (
+				{user_id == item.user_id && (
 					<div className="actions">
 						{isEditOpen ? (
 							<>
 								<GreenBtn
 									className="cancel"
 									onClick={() => setIsEditOpen(false)}
-									disabled={loading}>
+									disabled={userComment.pending}>
 									Cancel
 								</GreenBtn>
 								<PrimaryBtn
 									className="submit"
 									style={{ marginLeft: "15px" }}
-									onClick={() => hanldeEdit(item.comment_id)}
-									disabled={loading}>
+									onClick={() => {
+										dispatch(editComment(newComment, item)).then(() =>
+											setIsEditOpen(false)
+										)
+									}}
+									disabled={userComment.pending}>
 									Submit
 								</PrimaryBtn>
 							</>
@@ -134,14 +134,14 @@ const Comment = ({ item, user, setAllComments, page_id }) => {
 								<GreenBtn
 									className="edit"
 									onClick={() => setIsEditOpen(true)}
-									disabled={loading}>
+									disabled={userComment.pending}>
 									Edit
 								</GreenBtn>
 								<RedBtn
 									className="delete"
 									style={{ marginLeft: "15px" }}
-									onClick={() => setIsDeleteOpen(true)}
-									disabled={loading}>
+									onClick={() => dispatch(showModal(DELETE_COMMENT, item))}
+									disabled={userComment.pending}>
 									Delete
 								</RedBtn>
 							</>
@@ -156,29 +156,6 @@ const Comment = ({ item, user, setAllComments, page_id }) => {
 					onChange={e => setNewComment(e.target.value)}></textarea>
 			) : (
 				<p className="comment">{item.text}</p>
-			)}
-			{isDeleteOpen && (
-				<Modal>
-					<h2>Delete comment</h2>
-					<p>
-						Are you sure you want to delete the comment? <br />
-						<span>{item.text}</span>
-					</p>
-					<div className="buttons">
-						<GreenBtn
-							onClick={() => setIsDeleteOpen(false)}
-							className="cancel"
-							disabled={loading}>
-							Cancel
-						</GreenBtn>
-						<PrimaryBtn
-							onClick={() => handleDelete(item.comment_id)}
-							className="submit"
-							disabled={loading}>
-							Delete
-						</PrimaryBtn>
-					</div>
-				</Modal>
 			)}
 		</CommentBox>
 	)
@@ -227,10 +204,14 @@ const CommentBox = styled.div`
 		display: flex;
 		justify-content: space-between;
 	}
-	.user-data {
+	.comment-data {
 		width: 100%;
 		display: flex;
 		align-items: center;
+		.user-data {
+			display: flex;
+			align-items: center;
+		}
 		img {
 			width: 30px;
 			height: 30px;

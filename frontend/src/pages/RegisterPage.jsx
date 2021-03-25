@@ -1,42 +1,34 @@
 import { useState, useContext, useEffect } from "react"
 import { Link, useHistory } from "react-router-dom"
-import UserContext from "../UserContext"
 import styled from "styled-components"
-import { registerHandler } from "../api/user/auth"
 import { PrimaryBtn } from "../components/ButtonStyles"
-import ModalMessage from "../components/ModalMessage"
+import { useDispatch, useSelector } from "react-redux"
+import { register } from "../redux/actions/authActions"
+import { ClipLoader } from "react-spinners"
 
 export default function Register() {
-	const { user, setUser } = useContext(UserContext)
-
+	const dispatch = useDispatch()
+	const { isLoading, isLoggedIn } = useSelector(state => state.user)
 	const [form, setForm] = useState({
 		username: null,
 		email: null,
 		password: null,
 		password2: null,
 	})
-	const [loading, setLoading] = useState(false)
-	const [message, setMessage] = useState({ text: null, isSuccess: false })
 	const history = useHistory()
 
 	useEffect(() => {
-		if (user.isLoggedIn) {
-			history.push("/me/profile")
+		if (isLoggedIn) {
+			history.goBack()
 		}
-	}, [user])
+	}, [isLoggedIn, isLoading])
 
 	const handleChange = e => {
 		setForm({ ...form, [e.target.name]: e.target.value })
 	}
 	const handleSubmit = async e => {
 		e.preventDefault()
-		setLoading(true)
-		const { message, data, isSuccess } = await registerHandler(form)
-		setLoading(false)
-		setMessage({ text: message, isSuccess })
-		if (data) {
-			setUser({ ...data, isLoggedIn: true, isLoading: false })
-		}
+		dispatch(register(form))
 	}
 	return (
 		<RegisterEl>
@@ -72,17 +64,20 @@ export default function Register() {
 						onChange={handleChange}
 					/>
 					<PrimaryBtn
-						disabled={loading}
+						disabled={isLoading}
 						type="submit"
-						style={{ fontSize: "1rem", padding: "8px 24px" }}>
-						Register
+						style={{
+							fontSize: "1rem",
+							width: "120px",
+							height: "40px",
+						}}>
+						{isLoading ? <ClipLoader color="#fff" size="25" /> : "Register"}
 					</PrimaryBtn>
 					<p>
 						Already signed up? <Link to="/login">Log in</Link>
 					</p>
 				</form>
 			</div>
-			<ModalMessage message={message} setMessage={setMessage} />
 		</RegisterEl>
 	)
 }

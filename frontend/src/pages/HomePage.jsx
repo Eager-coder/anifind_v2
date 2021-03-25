@@ -3,6 +3,38 @@ import styled from "styled-components"
 import homeListQuery from "../api/anime/homeListAPI"
 import Carousel from "../components/Home/Carousel"
 import SearchSection from "../components/Search/SearchSection"
+
+export default function Home() {
+	const [trending, setTrending] = useState(null)
+	const [top, setTop] = useState(null)
+
+	const getAnimes = async () => {
+		try {
+			const { top, trending } = await homeListQuery()
+			setTrending(trending.media)
+			setTop(top.media)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+	useEffect(() => {
+		getAnimes()
+	}, [])
+	return (
+		<Container>
+			<div className="hero">
+				<div className="hero-container">
+					<h1>
+						Discover the world of anime using the world's largest anime database
+					</h1>
+				</div>
+			</div>
+			<SearchSection />
+			<Carousel header="Popular this season" list={trending} />
+			<Carousel header="Top animes of all time" list={top} />
+		</Container>
+	)
+}
 const Container = styled.div`
 	.hero {
 		background: url("/assets/images/background.jpg");
@@ -57,34 +89,3 @@ const Container = styled.div`
 		}
 	}
 `
-export default function Home() {
-	const [trending, setTrending] = useState(null)
-	const [top, setTop] = useState(null)
-
-	const getAnimes = async () => {
-		try {
-			const { top, trending } = await homeListQuery()
-			setTrending(trending.media)
-			setTop(top.media)
-		} catch (error) {
-			console.log(error)
-		}
-	}
-	useEffect(() => {
-		getAnimes()
-	}, [])
-	return (
-		<Container>
-			<div className="hero">
-				<div className="hero-container">
-					<h1>
-						Discover the world of anime using the world's largest anime database
-					</h1>
-				</div>
-			</div>
-			<SearchSection />
-			<Carousel header="Popular this season" list={trending} />
-			<Carousel header="Top animes of all time" list={top} />
-		</Container>
-	)
-}

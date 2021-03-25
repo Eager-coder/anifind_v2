@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 
@@ -58,7 +59,9 @@ const Nav = styled.nav`
 		}
 	}
 `
-export default function Navbar({ user, theme, switchTheme }) {
+export default function Navbar({ theme, switchTheme }) {
+	const user = useSelector(state => state.user)
+
 	const handleClick = () => {
 		switchTheme(theme === "light" ? "dark" : "light")
 	}
@@ -68,6 +71,7 @@ export default function Navbar({ user, theme, switchTheme }) {
 				<Link to="/">
 					<span className="logo">Ani</span>
 				</Link>
+				<Link to="/discussions/all">Discussiosn</Link>
 				<div className="nav-links">
 					<img
 						onClick={handleClick}

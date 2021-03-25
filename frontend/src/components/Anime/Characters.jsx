@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Link } from "react-router-dom"
 
 export default function Characters({ data }) {
+	if (!data.hasOwnProperty("characters")) return null
 	return (
 		<Section>
 			<h2>Main characters</h2>
@@ -12,12 +13,15 @@ export default function Characters({ data }) {
 						node: {
 							name: { full: name },
 							image,
+							id,
 						},
 					}) => (
-						<div className="character-card" key={name}>
-							<img src={image.large} alt={name} />
-							<p>{name}</p>
-						</div>
+						<Link to={`/character/${id}`} key={id}>
+							<div className="character-card">
+								<img src={image.large} alt={name} />
+								<p>{name}</p>
+							</div>
+						</Link>
 					)
 				)}
 			</div>

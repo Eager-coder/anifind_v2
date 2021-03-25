@@ -42,7 +42,10 @@ export default function Carousel({ header, list }) {
 											src={item.coverImage.extraLarge}
 											alt=""
 										/>
-										<p>{item.title.english || item.title.romaji}</p>
+										<p>
+											{item.title.english?.slice(0, 50) ||
+												item.title.romaji?.slice(0, 50)}
+										</p>
 									</div>
 								</Link>
 						  ))

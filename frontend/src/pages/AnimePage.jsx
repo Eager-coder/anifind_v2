@@ -1,75 +1,78 @@
-import React, { useContext, useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
-import animeAPI from "../api/anime/animeAPI"
 import Comments from "../components/Anime/Comments"
-import { addToFavorites, getFavorites } from "../api/user/favorite"
-import UserContext from "../UserContext"
 import RightSide from "../components/Anime/RightSide"
 import LeftSide from "../components/Anime/LeftSide"
 import Characters from "../components/Anime/Characters"
-import ModalMessage from "../components/ModalMessage"
+import { useDispatch, useSelector } from "react-redux"
+import { addToFavAnimes } from "../redux/actions/favActions"
+import Loading from "../components/Loading"
+import {
+	removeCurrentPageType,
+	setCurrentPageType,
+} from "../redux/actions/pageActions"
+import animeQuery from "../api/anime/animeAPI"
 
 export default function Anime({ match }) {
-	const [data, setData] = useState(null)
+	const dispatch = useDispatch()
 	const [isFavorite, setIsFavorite] = useState(false)
-	const { user, setUser } = useContext(UserContext)
-	const page_id = match.params.id
-	const [message, setMessage] = useState({ text: null, isSuccess: false })
+	const anime_id = match.params.id
+	const user = useSelector(state => state.user)
+	const { list: favorites, isLoading } = useSelector(
+		state => state.favorites.anime
+	)
+	const [info, setInfo] = useState(null)
 
 	useEffect(() => {
-		animeAPI(page_id).then(data => setData(data))
+		dispatch(setCurrentPageType("ANIME"))
+		animeQuery(anime_id).then(data => {
+			setInfo(data)
+		})
+		return () => dispatch(removeCurrentPageType())
+	}, [])
+
+	useEffect(() => {
 		if (user.isLoggedIn) {
 			setIsFavorite(checkIsFavorite())
 		}
-	}, [user])
+	}, [favorites])
 
 	const checkIsFavorite = () => {
-		return user?.favorites?.some(item => item.page_id == page_id)
+		return favorites?.some(item => item.anime_id == anime_id) || false
 	}
 
 	const handleFavorites = async () => {
-		if (!user.isLoggedIn)
-			return setMessage({
-				text: "Log in to add to favorites",
-				isSuccess: false,
-			})
-		const { message, isSuccess } = await addToFavorites(
-			page_id,
-			data.coverImage.extraLarge,
-			data.title.english || data.title.romaji
+		dispatch(
+			addToFavAnimes(
+				anime_id,
+				info.coverImage.extraLarge,
+				info.title.english || info.title.romaji
+			)
 		)
-		setMessage({ text: message, isSuccess })
-
-		if (isSuccess) {
-			setIsFavorite(true)
-			const { data: favorites } = await getFavorites()
-			setUser({ ...user, favorites })
-			return
-		}
-		return console.log(message)
 	}
 
-	if (data)
+	if (info)
 		return (
 			<Container>
 				<div className="flex-container">
 					<LeftSide
 						handleFavorites={handleFavorites}
-						data={data}
+						data={info}
 						isFavorite={isFavorite}
+						isLoading={isLoading}
 					/>
 					<RightSide
 						handleFavorites={handleFavorites}
-						data={data}
+						data={info}
 						isFavorite={isFavorite}
+						isLoading={isLoading}
 					/>
 				</div>
-				<Characters data={data} />
-				<Comments page_id={match.params.id} />
-				<ModalMessage message={message} setMessage={setMessage} />
+				<Characters data={info} />
+				<Comments anime_id={match.params.id} />
 			</Container>
 		)
-	return <div>Loading</div>
+	return <Loading size={100} />
 }
 
 const Container = styled.div`

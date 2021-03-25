@@ -2,7 +2,37 @@ import { useEffect } from "react"
 import { createPortal } from "react-dom"
 import styled from "styled-components"
 import { CSSTransition } from "react-transition-group"
+import { useDispatch, useSelector } from "react-redux"
+import { HIDE_MESSAGE } from "../redux/types"
 
+export default function ModalMessage() {
+	const dispatch = useDispatch()
+	const { text, isSuccess } = useSelector(state => state.app.message)
+
+	useEffect(() => {
+		if (text) {
+			const close = setTimeout(() => {
+				dispatch({ type: HIDE_MESSAGE })
+			}, 5000)
+
+			return () => clearTimeout(close)
+		}
+	}, [text])
+
+	return createPortal(
+		<CSSTransition
+			in={text ? true : false}
+			timeout={200}
+			classNames="message"
+			unmountOnExit>
+			<Container isSuccess={isSuccess}>
+				<p>{text}</p>
+				<span onClick={() => dispatch({ type: HIDE_MESSAGE })}>&#10006;</span>
+			</Container>
+		</CSSTransition>,
+		document.querySelector("#root")
+	)
+}
 const Container = styled.div`
 	position: fixed;
 	top: 0px;
@@ -16,6 +46,7 @@ const Container = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	z-index: 2;
 	p {
 		color: ${({ isSuccess }) => (isSuccess ? "#00915c" : "#C2185B")};
 		margin-right: 10px;
@@ -51,29 +82,3 @@ const Container = styled.div`
 		}
 	}
 `
-
-export default function ModalMessage({ message, setMessage }) {
-	useEffect(() => {
-		const close = setTimeout(() => {
-			setMessage({ text: null, isSuccess: false })
-		}, 5000)
-
-		return () => clearTimeout(close)
-	}, [message])
-
-	return createPortal(
-		<CSSTransition
-			in={message.text ? true : false}
-			timeout={200}
-			classNames="message"
-			unmountOnExit>
-			<Container isSuccess={message.isSuccess}>
-				<p>{message.text}</p>
-				<span onClick={() => setMessage({ text: null, isSuccess: false })}>
-					&#10006;
-				</span>
-			</Container>
-		</CSSTransition>,
-		document.querySelector("#root")
-	)
-}

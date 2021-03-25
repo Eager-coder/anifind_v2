@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, memo } from "react"
 import { useLocation } from "react-router-dom"
 import styled from "styled-components"
 import searchAPI from "../api/anime/searchAPI"
@@ -80,8 +80,10 @@ const SearchPage = styled.div`
 		max-width: 1200px;
 		padding: 0 50px;
 		display: grid;
-		grid-template-columns: repeat(5, auto);
-		justify-content: space-between;
+		/* grid-template-columns: repeat(auto-fit, minmax(100px, 180px)); */
+		grid-template-columns: repeat(5, 1fr);
+		/* grid-template-columns: masonry; */
+		column-gap: 30px;
 		row-gap: 30px;
 	}
 	@media (max-width: 950px) {

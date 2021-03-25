@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { Link } from "react-router-dom"
 import { PrimaryBtn } from "../ButtonStyles"
 
@@ -38,9 +38,7 @@ const Section = styled.section`
 			padding: 2px 5px;
 		}
 	}
-	.add-btn {
-		display: none;
-	}
+
 	@media screen and (max-width: 768px) {
 		width: 100%;
 		margin: 0;
@@ -69,9 +67,7 @@ const Section = styled.section`
 		.genres {
 			margin-top: 5px;
 		}
-		.add-btn {
-			display: block;
-		}
+
 		@media screen and (max-width: 480px) {
 			margin-top: 20px;
 			h1 {
@@ -104,7 +100,26 @@ const Section = styled.section`
 		}
 	}
 `
-export default function RightSide({ data, handleFavorites, isFavorite }) {
+const ButtonStyle = css`
+	width: max-content;
+	height: max-content;
+	padding: 5px;
+	display: none;
+	font-size: 1rem;
+	@media screen and (max-width: 768px) {
+		display: initial;
+		font-size: 0.8rem;
+	}
+`
+export default function RightSide({
+	data,
+	handleFavorites,
+	isFavorite,
+	isLoading,
+}) {
+	// if (!data.hasOwnProperty("title")) return null
+	const btnName = isFavorite ? "Added" : "Add to Favorites"
+
 	return (
 		<Section>
 			<h1>{data.title.english || data.title.romaji}</h1>
@@ -113,9 +128,12 @@ export default function RightSide({ data, handleFavorites, isFavorite }) {
 					<img className="mobile-img" src={data.coverImage.extraLarge} alt="" />
 					<PrimaryBtn
 						disabled={isFavorite}
-						className="add-btn"
-						onClick={() => handleFavorites()}>
-						{isFavorite ? "Added" : "Add to Favorites"}
+						isLoading={isLoading}
+						onClick={() => handleFavorites()}
+						customStyle={ButtonStyle}
+						// className="add-btn"
+						spinnerSize={7}>
+						{btnName}
 					</PrimaryBtn>
 				</div>
 				<p dangerouslySetInnerHTML={{ __html: data.description }}></p>

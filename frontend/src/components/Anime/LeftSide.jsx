@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { PrimaryBtn } from "../ButtonStyles"
 const Section = styled.section`
 	width: 35%;
@@ -62,15 +62,37 @@ const Section = styled.section`
 		}
 	}
 `
-export default function LeftSide({ data, handleFavorites, isFavorite }) {
+const ButtonStyle = css`
+	width: max-content;
+	height: max-content;
+	padding: 5px;
+	/* font-size: 1rem; */
+	font-size: 0.8rem;
+	@media screen and (max-width: 768px) {
+		display: none;
+	}
+`
+export default function LeftSide({
+	data,
+	handleFavorites,
+	isFavorite,
+	isLoading,
+}) {
+	const btnName = isFavorite ? "Added" : "Add to Favorites"
+
+	// if (isLoading) btnName = "Adding..."
+	// else btnName = isFavorite ? "Added" : "Add to Favorites"
+	// if (!data.hasOwnProperty("coverImage")) return null
 	return (
 		<Section>
 			<img className="desktop-img" src={data.coverImage.extraLarge} alt="" />
 			<PrimaryBtn
 				disabled={isFavorite}
-				className="add-btn"
-				onClick={() => handleFavorites()}>
-				{isFavorite ? "Added" : "Add to Favorites"}
+				isLoading={isLoading}
+				onClick={() => handleFavorites()}
+				customStyle={ButtonStyle}
+				spinnerSize={7}>
+				{btnName}
 			</PrimaryBtn>
 			<ul className="details">
 				<li>
