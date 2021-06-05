@@ -39,7 +39,7 @@ app.use("/api/discussion/thread", threadRouter)
 app.use("/api/discussion/post", postRouter)
 const PORT = process.env.PORT
 
-app.use(express.static("../frontend/build"))
-app.get("*", (req, res) => res.sendFile(path.join(__dirname, "../frontend/build/index.html")))
+app.use(express.static("./frontend/build"))
+app.get("*", (req, res) => res.sendFile(path.join(__dirname, "./frontend/build/index.html")))
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
