@@ -1,5 +1,14 @@
 {
-	"workbench.colorCustomizations": {
-		"editor.background": "#000000"
-	}
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "kashin.db.elephantsql.com",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Anifind",
+      "database": "qewfluto",
+      "username": "qewfluto",
+      "password": "Io-0ut79wT-K9IDt-sBl-QpltIgWorZc"
+    }
+  ]
 }
