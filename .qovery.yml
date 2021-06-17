@@ -1,0 +1,11 @@
+---
+application:
+  name: "anifind-v2"
+  project: "anifind"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-anifind-v2"
+  routes:
+  - application_name: "anifind-v2"
+    paths:
+    - "/*"
